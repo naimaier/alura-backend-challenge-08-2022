@@ -3,11 +3,13 @@ package naimaier.finances.controller;
 import java.net.URI;
 import java.time.LocalDate;
 import java.time.temporal.TemporalAdjusters;
+import java.util.List;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -62,5 +64,13 @@ public class ReceitasController {
 						startDate, 
 						endDate)
 				.isPresent();
+	}
+	
+	
+	@GetMapping
+	public List<ReceitaDto> readAll(){
+		List<Receita> receitas = receitaRepository.findAll();
+		
+		return ReceitaDto.convert(receitas);
 	}
 }

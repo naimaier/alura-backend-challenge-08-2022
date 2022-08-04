@@ -3,6 +3,8 @@ package naimaier.finances.dto;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.validation.constraints.NotNull;
 
@@ -65,5 +67,13 @@ public class ReceitaDto {
 		receita.setData(date);
 		
 		return receita;
+	}
+	
+	public static List<ReceitaDto> convert(List<Receita> receitas){
+		
+		return receitas
+				.stream()
+				.map(ReceitaDto::new)
+				.collect(Collectors.toList());
 	}
 }
