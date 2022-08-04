@@ -4,12 +4,14 @@ import java.net.URI;
 import java.time.LocalDate;
 import java.time.temporal.TemporalAdjusters;
 import java.util.List;
+import java.util.Optional;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -72,5 +74,16 @@ public class ReceitasController {
 		List<Receita> receitas = receitaRepository.findAll();
 		
 		return ReceitaDto.convert(receitas);
+	}
+	
+	@GetMapping("/{id}")
+	public ResponseEntity<ReceitaDto> readOne(@PathVariable Long id){
+		Optional<Receita> receita = receitaRepository.findById(id);
+		
+		if (!receita.isPresent()) {
+			return ResponseEntity.notFound().build();
+		}
+		
+		return ResponseEntity.ok(new ReceitaDto(receita.get()));
 	}
 }
