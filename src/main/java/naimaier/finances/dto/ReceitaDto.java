@@ -1,0 +1,69 @@
+package naimaier.finances.dto;
+
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
+import javax.validation.constraints.NotNull;
+
+import naimaier.finances.model.Receita;
+
+public class ReceitaDto {
+
+	private Long id;
+	@NotNull
+	private String descricao;
+	@NotNull
+	private BigDecimal valor;
+	@NotNull
+	private String data;
+	
+	private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+	
+	public ReceitaDto() {
+	}
+	
+	public ReceitaDto(Receita receita) {
+		this.id = receita.getId();
+		this.descricao = receita.getDescricao();
+		this.valor = receita.getValor();
+		this.data = receita.getData().format(formatter);
+	}
+	
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
+	public String getDescricao() {
+		return descricao;
+	}
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
+	}
+	public BigDecimal getValor() {
+		return valor;
+	}
+	public void setValor(BigDecimal valor) {
+		this.valor = valor;
+	}
+	public String getData() {
+		return data;
+	}
+	public void String(String data) {
+		this.data = data;
+	}
+	
+	public Receita toReceita() {
+		Receita receita = new Receita();
+		
+		receita.setDescricao(descricao);
+		receita.setValor(valor);
+		
+		LocalDate date = LocalDate.parse(data, formatter);
+		receita.setData(date);
+		
+		return receita;
+	}
+}
