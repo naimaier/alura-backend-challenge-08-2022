@@ -16,11 +16,11 @@ import naimaier.finances.repository.ReceitaRepository;
 public class ReceitaDto {
 
 	private Long id;
-	@NotNull @NotEmpty
+	@NotEmpty(message="A descrição deve ser informada")
 	private String descricao;
-	@NotNull @NotEmpty
+	@NotNull(message="Um valor deve ser informado")
 	private BigDecimal valor;
-	@NotNull @NotEmpty
+	@NotEmpty(message="A data deve ser informada")
 	private String data;
 	
 	private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
