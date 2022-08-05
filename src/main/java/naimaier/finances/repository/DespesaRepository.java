@@ -10,4 +10,6 @@ import naimaier.finances.model.Despesa;
 public interface DespesaRepository extends JpaRepository<Despesa, Long>{
 
 	public Optional<Despesa> findByDescricaoAndDataBetween(String descricao, LocalDate startDate, LocalDate endDate);
+
+	public Optional<Despesa> findByIdNotAndDescricaoAndDataBetween(Long id, String descricao, LocalDate startDate, LocalDate endDate);
 }

@@ -12,12 +12,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import naimaier.finances.dto.DespesaDto;
+import naimaier.finances.dto.DespesaUpdateDto;
 import naimaier.finances.model.Despesa;
 import naimaier.finances.repository.DespesaRepository;
 
@@ -36,7 +38,7 @@ public class DespesasController {
 		if (despesaDto.isRepeated(despesaRepository)) {
 			return ResponseEntity
 					.badRequest()
-					.body("Despesa repetida");
+					.body("Despesa duplicada");
 		}
 		
 		Despesa despesa = despesaDto.toDespesa();
@@ -74,6 +76,31 @@ public class DespesasController {
 		
 		return ResponseEntity
 				.ok(new DespesaDto(despesa.get()));
+	}
+	
+	@PutMapping("/{id}")
+	@Transactional
+	public ResponseEntity<?> update(@PathVariable Long id,
+			@Valid @RequestBody DespesaUpdateDto despesaUpdateDto) {
+		
+		Optional<Despesa> despesa = despesaRepository.findById(id);
+		
+		if (!despesa.isPresent()) {
+			return ResponseEntity
+					.notFound()
+					.build();
+		}
+		
+		if (despesaUpdateDto.isRepeated(id, despesaRepository)) {
+			return ResponseEntity
+					.badRequest()
+					.body("Despesa duplicada");
+		}
+		
+		Despesa updatedItem = despesaUpdateDto.update(id, despesaRepository);
+		
+		return ResponseEntity
+				.ok(new DespesaDto(updatedItem));
 	}
 
 }
