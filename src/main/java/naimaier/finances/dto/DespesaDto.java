@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAdjusters;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -81,5 +83,12 @@ public class DespesaDto {
 		despesa.setData(date);
 		
 		return despesa;
+	}
+	
+	public static List<DespesaDto> convert(List<Despesa> despesas) {
+		return despesas
+				.stream()
+				.map(DespesaDto::new)
+				.collect(Collectors.toList());
 	}
 }
