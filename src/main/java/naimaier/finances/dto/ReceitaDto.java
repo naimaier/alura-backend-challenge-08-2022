@@ -3,12 +3,14 @@ package naimaier.finances.dto;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAdjusters;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.validation.constraints.NotNull;
 
 import naimaier.finances.model.Receita;
+import naimaier.finances.repository.ReceitaRepository;
 
 public class ReceitaDto {
 
@@ -55,6 +57,20 @@ public class ReceitaDto {
 	}
 	public void String(String data) {
 		this.data = data;
+	}
+	
+	public boolean isRepeated(ReceitaRepository receitaRepository) {
+		LocalDate startDate = LocalDate.parse(data, formatter)
+				.with(TemporalAdjusters.firstDayOfMonth());
+		
+		LocalDate endDate = LocalDate.parse(data, formatter)
+				.with(TemporalAdjusters.lastDayOfMonth());
+		
+		return receitaRepository
+				.findByDescricaoAndDataBetween(descricao, 
+						startDate, 
+						endDate)
+				.isPresent();
 	}
 	
 	public Receita toReceita() {

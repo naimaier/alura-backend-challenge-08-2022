@@ -1,8 +1,6 @@
 package naimaier.finances.controller;
 
 import java.net.URI;
-import java.time.LocalDate;
-import java.time.temporal.TemporalAdjusters;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,14 +31,13 @@ public class ReceitasController {
 	public ResponseEntity<?> save(@Valid @RequestBody ReceitaDto receitaDto, 
 			UriComponentsBuilder uriBuilder) {
 		
-		Receita receita = receitaDto.toReceita();
-		
-		if (isRepeated(receita)) {
+		if (receitaDto.isRepeated(receitaRepository)) {
 			return ResponseEntity
 					.badRequest()
 					.body("Receita duplicada");
 		}
 		
+		Receita receita = receitaDto.toReceita();
 		Receita savedItem = receitaRepository.save(receita);
 		
 		URI uri = uriBuilder
@@ -54,21 +51,6 @@ public class ReceitasController {
 	}
 	
 	
-	private boolean isRepeated(Receita receita) {
-		LocalDate startDate = receita.getData()
-				.with(TemporalAdjusters.firstDayOfMonth());
-		
-		LocalDate endDate = receita.getData()
-				.with(TemporalAdjusters.lastDayOfMonth());
-		
-		return receitaRepository
-				.findByDescricaoAndDataBetween(receita.getDescricao(), 
-						startDate, 
-						endDate)
-				.isPresent();
-	}
-	
-	
 	@GetMapping
 	public List<ReceitaDto> readAll(){
 		List<Receita> receitas = receitaRepository.findAll();
@@ -76,14 +58,19 @@ public class ReceitasController {
 		return ReceitaDto.convert(receitas);
 	}
 	
+	
 	@GetMapping("/{id}")
 	public ResponseEntity<ReceitaDto> readOne(@PathVariable Long id){
 		Optional<Receita> receita = receitaRepository.findById(id);
 		
 		if (!receita.isPresent()) {
-			return ResponseEntity.notFound().build();
+			return ResponseEntity
+					.notFound()
+					.build();
 		}
 		
 		return ResponseEntity.ok(new ReceitaDto(receita.get()));
 	}
+	
+	
 }
