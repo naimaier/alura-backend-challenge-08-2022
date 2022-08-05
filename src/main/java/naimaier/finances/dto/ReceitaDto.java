@@ -56,7 +56,7 @@ public class ReceitaDto {
 	public String getData() {
 		return data;
 	}
-	public void String(String data) {
+	public void setData(String data) {
 		this.data = data;
 	}
 	

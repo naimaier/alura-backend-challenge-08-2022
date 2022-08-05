@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAdjusters;
 
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 import naimaier.finances.model.Receita;
@@ -12,11 +13,11 @@ import naimaier.finances.repository.ReceitaRepository;
 
 public class ReceitaUpdateDto {
 
-	@NotNull
+	@NotEmpty(message="A descrição deve ser informada")
 	private String descricao;
-	@NotNull
+	@NotNull(message="Um valor deve ser informado")
 	private BigDecimal valor;
-	@NotNull
+	@NotEmpty(message="A data deve ser informada")
 	private String data;
 	
 	private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
@@ -45,7 +46,7 @@ public class ReceitaUpdateDto {
 	public String getData() {
 		return data;
 	}
-	public void String(String data) {
+	public void setData(String data) {
 		this.data = data;
 	}
 	
