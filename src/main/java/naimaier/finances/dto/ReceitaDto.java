@@ -7,6 +7,7 @@ import java.time.temporal.TemporalAdjusters;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 import naimaier.finances.model.Receita;
@@ -15,11 +16,11 @@ import naimaier.finances.repository.ReceitaRepository;
 public class ReceitaDto {
 
 	private Long id;
-	@NotNull
+	@NotNull @NotEmpty
 	private String descricao;
-	@NotNull
+	@NotNull @NotEmpty
 	private BigDecimal valor;
-	@NotNull
+	@NotNull @NotEmpty
 	private String data;
 	
 	private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
