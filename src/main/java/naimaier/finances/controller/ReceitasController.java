@@ -1,6 +1,9 @@
 package naimaier.finances.controller;
 
 import java.net.URI;
+import java.time.DateTimeException;
+import java.time.LocalDate;
+import java.time.temporal.TemporalAdjusters;
 import java.util.List;
 import java.util.Optional;
 
@@ -82,6 +85,27 @@ public class ReceitasController {
 		}
 		
 		return ResponseEntity.ok(new ReceitaDto(receita.get()));
+	}
+	
+	
+	@GetMapping("/{ano}/{mes}")
+	public ResponseEntity<List<ReceitaDto>> readByMonth(@PathVariable Integer ano, @PathVariable Integer mes){
+		
+		LocalDate startDate;
+		
+		try {
+			startDate = LocalDate.of(ano, mes, 1);			
+		} catch (DateTimeException e) {
+			return ResponseEntity
+					.badRequest()
+					.build();
+		}
+		
+		LocalDate endDate = startDate.with(TemporalAdjusters.lastDayOfMonth());
+		
+		List<Receita> receitas = receitaRepository.findByDataBetween(startDate, endDate);
+		
+		return ResponseEntity.ok(ReceitaDto.convert(receitas));
 	}
 	
 	

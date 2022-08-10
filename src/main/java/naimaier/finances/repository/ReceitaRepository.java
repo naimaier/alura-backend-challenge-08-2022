@@ -13,4 +13,5 @@ public interface ReceitaRepository extends JpaRepository<Receita, Long>{
 	public Optional<Receita> findByDescricaoAndDataBetween(String descricao, LocalDate startDate, LocalDate endDate);
 	public Optional<Receita> findByIdNotAndDescricaoAndDataBetween(Long id, String descricao, LocalDate startDate, LocalDate endDate);
 	public List<Receita> findByDescricaoContaining(String descricao);
+	public List<Receita> findByDataBetween(LocalDate startDate, LocalDate endDate);
 }
