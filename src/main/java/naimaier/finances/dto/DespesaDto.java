@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
+import naimaier.finances.model.Categoria;
 import naimaier.finances.model.Despesa;
 import naimaier.finances.repository.DespesaRepository;
 
@@ -22,6 +23,7 @@ public class DespesaDto {
 	private BigDecimal valor;
 	@NotEmpty(message="A data deve ser informada")
 	private String data;
+	private String categoria;
 	
 	private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 	
@@ -33,6 +35,7 @@ public class DespesaDto {
 		this.descricao = despesa.getDescricao();
 		this.valor = despesa.getValor();
 		this.data = despesa.getData().format(formatter);
+		this.categoria = despesa.getCategoria().getDescricao();
 	}
 	
 	
@@ -60,7 +63,14 @@ public class DespesaDto {
 	public void setData(String data) {
 		this.data = data;
 	}
-	
+	public String getCategoria() {
+		return categoria;
+	}
+
+	public void setCategoria(String categoria) {
+		this.categoria = categoria;
+	}
+
 	public boolean isRepeated(DespesaRepository despesaRepository) {
 		LocalDate startDate = LocalDate.parse(data, formatter)
 				.with(TemporalAdjusters.firstDayOfMonth());
@@ -81,6 +91,18 @@ public class DespesaDto {
 		
 		LocalDate date = LocalDate.parse(data, formatter);
 		despesa.setData(date);
+		
+		Categoria inputCategory = Categoria.OUTRAS;
+		
+		if (categoria != null) {
+			try {
+				inputCategory = Categoria.valueOf(categoria.toUpperCase());				
+			} catch (IllegalArgumentException e) {
+				
+			}
+		}
+		
+		despesa.setCategoria(inputCategory);
 		
 		return despesa;
 	}
