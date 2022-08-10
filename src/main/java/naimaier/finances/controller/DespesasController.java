@@ -57,9 +57,15 @@ public class DespesasController {
 	}
 	
 	@GetMapping
-	public List<DespesaDto> readAll() {
+	public List<DespesaDto> readAll(String descricao) {
 		
-		List<Despesa> despesas = despesaRepository.findAll();
+		List<Despesa> despesas;
+		
+		if (descricao == null) {
+			despesas = despesaRepository.findAll();
+		} else {
+			despesas = despesaRepository.findByDescricaoContaining(descricao);
+		}
 		
 		return DespesaDto.convert(despesas);
 	}
