@@ -57,8 +57,15 @@ public class ReceitasController {
 	
 	
 	@GetMapping
-	public List<ReceitaDto> readAll(){
-		List<Receita> receitas = receitaRepository.findAll();
+	public List<ReceitaDto> readAll(String descricao){
+		
+		List<Receita> receitas;
+		
+		if (descricao == null) {
+			receitas = receitaRepository.findAll();						
+		} else {
+			receitas = receitaRepository.findByDescricaoContaining(descricao);
+		}
 		
 		return ReceitaDto.convert(receitas);
 	}
