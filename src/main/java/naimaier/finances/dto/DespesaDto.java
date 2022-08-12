@@ -2,13 +2,14 @@ package naimaier.finances.dto;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAdjusters;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import naimaier.finances.model.Categoria;
 import naimaier.finances.model.Despesa;
@@ -21,11 +22,11 @@ public class DespesaDto {
 	private String descricao;
 	@NotNull(message="Um valor deve ser informado")
 	private BigDecimal valor;
-	@NotEmpty(message="A data deve ser informada")
-	private String data;
+	@NotNull(message="A data deve ser informada")
+	@JsonFormat(pattern="dd/MM/yyyy")
+	private LocalDate data;
 	private String categoria;
 	
-	private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 	
 	public DespesaDto() {
 	}
@@ -34,7 +35,7 @@ public class DespesaDto {
 		this.id = despesa.getId();
 		this.descricao = despesa.getDescricao();
 		this.valor = despesa.getValor();
-		this.data = despesa.getData().format(formatter);
+		this.data = despesa.getData();
 		this.categoria = despesa.getCategoria().getDescricao();
 	}
 	
@@ -57,10 +58,10 @@ public class DespesaDto {
 	public void setValor(BigDecimal valor) {
 		this.valor = valor;
 	}
-	public String getData() {
+	public LocalDate getData() {
 		return data;
 	}
-	public void setData(String data) {
+	public void setData(LocalDate data) {
 		this.data = data;
 	}
 	public String getCategoria() {
@@ -72,10 +73,10 @@ public class DespesaDto {
 	}
 
 	public boolean isRepeated(DespesaRepository despesaRepository) {
-		LocalDate startDate = LocalDate.parse(data, formatter)
+		LocalDate startDate = data
 				.with(TemporalAdjusters.firstDayOfMonth());
 		
-		LocalDate endDate = LocalDate.parse(data, formatter)
+		LocalDate endDate = data
 				.with(TemporalAdjusters.lastDayOfMonth());
 		
 		return despesaRepository
@@ -88,9 +89,7 @@ public class DespesaDto {
 		
 		despesa.setDescricao(descricao);
 		despesa.setValor(valor);
-		
-		LocalDate date = LocalDate.parse(data, formatter);
-		despesa.setData(date);
+		despesa.setData(data);
 		
 		Categoria inputCategory = Categoria.OUTRAS;
 		
