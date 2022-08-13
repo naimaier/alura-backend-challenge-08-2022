@@ -16,6 +16,6 @@ public interface ReceitaRepository extends JpaRepository<Receita, Long>{
 	public Optional<Receita> findByIdNotAndDescricaoAndDataBetween(Long id, String descricao, LocalDate startDate, LocalDate endDate);
 	public List<Receita> findByDescricaoContaining(String descricao);
 	public List<Receita> findByDataBetween(LocalDate startDate, LocalDate endDate);
-	@Query("SELECT SUM(r.valor) FROM Receita r WHERE r.data > :startDate AND r.data < :endDate")
+	@Query("SELECT SUM(r.valor) FROM Receita r WHERE r.data >= :startDate AND r.data <= :endDate")
 	public Optional<BigDecimal> sumBetweenData(LocalDate startDate, LocalDate endDate);
 }
