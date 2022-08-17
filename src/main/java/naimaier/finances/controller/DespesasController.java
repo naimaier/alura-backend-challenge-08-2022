@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -60,7 +61,7 @@ public class DespesasController {
 	}
 	
 	@GetMapping
-	public List<DespesaDto> readAll(String descricao) {
+	public List<DespesaDto> readAll(@RequestParam(required=false) String descricao) {
 		
 		List<Despesa> despesas;
 		
