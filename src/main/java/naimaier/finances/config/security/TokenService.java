@@ -3,6 +3,7 @@ package naimaier.finances.config.security;
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Profile;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +13,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import naimaier.finances.model.User;
 
 @Service
+@Profile("prod")
 public class TokenService {
 
 	@Value("${finances.jwt.expiration}")
