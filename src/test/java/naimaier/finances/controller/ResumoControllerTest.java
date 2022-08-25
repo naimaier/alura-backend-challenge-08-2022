@@ -1,7 +1,5 @@
 package naimaier.finances.controller;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import java.math.BigDecimal;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
@@ -10,6 +8,8 @@ import java.time.LocalDate;
 import javax.transaction.Transactional;
 
 import org.junit.jupiter.api.Test;
+import org.skyscreamer.jsonassert.JSONAssert;
+import org.skyscreamer.jsonassert.JSONCompareMode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureTestEntityManager;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
@@ -64,7 +64,7 @@ class ResumoControllerTest {
 				.getResponse()
 				.getContentAsString(StandardCharsets.UTF_8);
 		
-		assertEquals(expectedResult, jsonResponse);
+		JSONAssert.assertEquals(expectedResult, jsonResponse, JSONCompareMode.STRICT);
 	}
 	
 	
@@ -86,7 +86,7 @@ class ResumoControllerTest {
 		
 		String expectedResult = "{\"totalReceitas\":0,\"totalDespesas\":0,\"saldo\":0,\"gastoTotalPorCategoria\":[]}";
 		
-		assertEquals(expectedResult, jsonResponse);
+		JSONAssert.assertEquals(expectedResult, jsonResponse, JSONCompareMode.STRICT);
 	}
 	
 	

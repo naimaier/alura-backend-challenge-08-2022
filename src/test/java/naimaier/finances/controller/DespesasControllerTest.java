@@ -1,7 +1,5 @@
 package naimaier.finances.controller;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 
@@ -9,6 +7,8 @@ import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
+import org.skyscreamer.jsonassert.JSONAssert;
+import org.skyscreamer.jsonassert.JSONCompareMode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -31,20 +31,17 @@ class DespesasControllerTest {
 	@Autowired
 	MockMvc mockMvc;
 	
-	String jsonElement1 = "{\"descricao\":\"mercado\",\"valor\":\"500\",\"data\":\"20/08/2022\",\"categoria\":\"Alimentação\"}";
-	String jsonExpectedElement1 = "{\"id\":1,\"descricao\":\"mercado\",\"valor\":500.00,\"data\":\"20/08/2022\",\"categoria\":\"Alimentação\"}";
+	String jsonElement1 = "{\"descricao\":\"mercado\",\"valor\":500,\"data\":\"20/08/2022\",\"categoria\":\"Alimentação\"}";
 	
-	String jsonElement2 = "{\"descricao\":\"acougue\",\"valor\":\"200\",\"data\":\"20/09/2022\",\"categoria\":\"Alimentação\"}";
-	String jsonExpectedElement2 = "{\"id\":2,\"descricao\":\"acougue\",\"valor\":200.00,\"data\":\"20/09/2022\",\"categoria\":\"Alimentação\"}";
+	String jsonElement2 = "{\"descricao\":\"acougue\",\"valor\":200,\"data\":\"20/09/2022\",\"categoria\":\"Alimentação\"}";
 	
-	String jsonElement3 = "{\"descricao\":\"combustivel\",\"valor\":\"800\",\"data\":\"23/09/2022\",\"categoria\":\"Transporte\"}";
-	String jsonExpectedElement3 = "{\"id\":3,\"descricao\":\"combustivel\",\"valor\":800.00,\"data\":\"23/09/2022\",\"categoria\":\"Transporte\"}";
+	String jsonElement3 = "{\"descricao\":\"combustivel\",\"valor\":800,\"data\":\"23/09/2022\",\"categoria\":\"Transporte\"}";
 	
 	String jsonElementWithoutCategory = "{\"descricao\":\"outras\",\"valor\":\"80.00\",\"data\":\"08/10/2022\"}";
-	String jsonExpectedElementWithoutCategory = "{\"id\":4,\"descricao\":\"outras\",\"valor\":80.00,\"data\":\"08/10/2022\",\"categoria\":\"Outras\"}";
+	String jsonExpectedElementWithoutCategory = "{\"descricao\":\"outras\",\"valor\":80.00,\"data\":\"08/10/2022\",\"categoria\":\"Outras\"}";
 	
-	String jsonExpectedAllElements = "[" + jsonExpectedElement1 + "," + jsonExpectedElement2 + "," + jsonExpectedElement3 + "," + jsonExpectedElementWithoutCategory + "]";
-	String jsonExpectedSeptemberElements = "[" + jsonExpectedElement2 + "," + jsonExpectedElement3 + "]";
+	String jsonExpectedAllElements = "[" + jsonElement1 + "," + jsonElement2 + "," + jsonElement3 + "," + jsonExpectedElementWithoutCategory + "]";
+	String jsonExpectedSeptemberElements = "[" + jsonElement2 + "," + jsonElement3 + "]";
 	
 	
 	@Test
@@ -98,7 +95,7 @@ class DespesasControllerTest {
 		
 		String jsonResponse = mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8);
 		
-		assertEquals(jsonExpectedElementWithoutCategory, jsonResponse);
+		JSONAssert.assertEquals(jsonExpectedElementWithoutCategory, jsonResponse, JSONCompareMode.LENIENT);
 	}
 	
 	
@@ -167,7 +164,8 @@ class DespesasControllerTest {
 		
 		String jsonResponse = mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8);
 		
-		assertEquals(jsonExpectedAllElements, jsonResponse);
+		//TODO ver
+		JSONAssert.assertEquals(jsonExpectedAllElements, jsonResponse, JSONCompareMode.LENIENT);
 	}
 	
 	
@@ -186,7 +184,8 @@ class DespesasControllerTest {
 		
 		String jsonResponse = mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8);
 		
-		assertEquals("[" + jsonExpectedElement3 + "]", jsonResponse);
+		//TODO ver
+		JSONAssert.assertEquals("[" + jsonElement3 + "]", jsonResponse, JSONCompareMode.LENIENT);
 	}
 	
 	
@@ -205,7 +204,7 @@ class DespesasControllerTest {
 		
 		String jsonResponse = mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8);
 		
-		assertEquals("[]", jsonResponse);
+		JSONAssert.assertEquals("[]", jsonResponse, JSONCompareMode.STRICT);
 	}
 	
 	
@@ -226,7 +225,7 @@ class DespesasControllerTest {
 		
 		String jsonResponse1 = mvcResult1.getResponse().getContentAsString(StandardCharsets.UTF_8);
 		
-		assertEquals(jsonExpectedElement1, jsonResponse1);
+		JSONAssert.assertEquals(jsonElement1, jsonResponse1, JSONCompareMode.LENIENT);
 		
 		// Element 2
 		
@@ -241,7 +240,7 @@ class DespesasControllerTest {
 		
 		String jsonResponse2 = mvcResult2.getResponse().getContentAsString(StandardCharsets.UTF_8);
 		
-		assertEquals(jsonExpectedElement2, jsonResponse2);
+		JSONAssert.assertEquals(jsonElement2, jsonResponse2, JSONCompareMode.LENIENT);
 	}
 	
 	
@@ -289,7 +288,7 @@ class DespesasControllerTest {
 		
 		String jsonResponse = mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8);
 		
-		assertEquals(jsonExpectedSeptemberElements, jsonResponse);
+		JSONAssert.assertEquals(jsonExpectedSeptemberElements, jsonResponse, JSONCompareMode.LENIENT);
 	}
 	
 	

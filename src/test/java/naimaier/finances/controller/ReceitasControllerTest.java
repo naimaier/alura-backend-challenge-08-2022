@@ -1,13 +1,13 @@
 package naimaier.finances.controller;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import java.net.URI;
 
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
+import org.skyscreamer.jsonassert.JSONAssert;
+import org.skyscreamer.jsonassert.JSONCompareMode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -30,17 +30,14 @@ class ReceitasControllerTest {
 	@Autowired
 	MockMvc mockMvc;
 	
-	String jsonElement1 = "{\"descricao\":\"teste\",\"valor\":\"80\",\"data\":\"20/08/2022\"}";
-	String jsonExpectedElement1 = "{\"id\":1,\"descricao\":\"teste\",\"valor\":80.00,\"data\":\"20/08/2022\"}";
+	String jsonElement1 = "{\"descricao\":\"teste\",\"valor\":80,\"data\":\"20/08/2022\"}";
 	
-	String jsonElement2 = "{\"descricao\":\"teste\",\"valor\":\"80\",\"data\":\"20/09/2022\"}";
-	String jsonExpectedElement2 = "{\"id\":2,\"descricao\":\"teste\",\"valor\":80.00,\"data\":\"20/09/2022\"}";
+	String jsonElement2 = "{\"descricao\":\"teste\",\"valor\":80,\"data\":\"20/09/2022\"}";
 	
-	String jsonElement3 = "{\"descricao\":\"teste3\",\"valor\":\"80\",\"data\":\"23/09/2022\"}";
-	String jsonExpectedElement3 = "{\"id\":3,\"descricao\":\"teste3\",\"valor\":80.00,\"data\":\"23/09/2022\"}";
+	String jsonElement3 = "{\"descricao\":\"teste3\",\"valor\":80,\"data\":\"23/09/2022\"}";
 	
-	String jsonExpectedAllElements = "[" + jsonExpectedElement1 + "," + jsonExpectedElement2 + "," + jsonExpectedElement3 + "]";
-	String jsonExpectedSeptemberElements = "[" + jsonExpectedElement2 + "," + jsonExpectedElement3 + "]";
+	String jsonExpectedAllElements = "[" + jsonElement1 + "," + jsonElement2 + "," + jsonElement3 + "]";
+	String jsonExpectedSeptemberElements = "[" + jsonElement2 + "," + jsonElement3 + "]";
 	
 	
 	@Test
@@ -142,7 +139,7 @@ class ReceitasControllerTest {
 		
 		String jsonResponse = mvcResult.getResponse().getContentAsString();
 		
-		assertEquals(jsonExpectedAllElements, jsonResponse);
+		JSONAssert.assertEquals(jsonExpectedAllElements, jsonResponse, JSONCompareMode.LENIENT);
 	}
 	
 	
@@ -161,7 +158,7 @@ class ReceitasControllerTest {
 		
 		String jsonResponse = mvcResult.getResponse().getContentAsString();
 		
-		assertEquals("[" + jsonExpectedElement3 + "]", jsonResponse);
+		JSONAssert.assertEquals("[" + jsonElement3 + "]", jsonResponse, JSONCompareMode.LENIENT);
 	}
 	
 	
@@ -180,7 +177,7 @@ class ReceitasControllerTest {
 		
 		String jsonResponse = mvcResult.getResponse().getContentAsString();
 		
-		assertEquals("[]", jsonResponse);
+		JSONAssert.assertEquals("[]", jsonResponse, JSONCompareMode.STRICT);
 	}
 	
 	
@@ -201,7 +198,7 @@ class ReceitasControllerTest {
 		
 		String jsonResponse1 = mvcResult1.getResponse().getContentAsString();
 		
-		assertEquals(jsonExpectedElement1, jsonResponse1);
+		JSONAssert.assertEquals(jsonElement1, jsonResponse1, JSONCompareMode.LENIENT);
 		
 		// Element 2
 		
@@ -216,7 +213,7 @@ class ReceitasControllerTest {
 		
 		String jsonResponse2 = mvcResult2.getResponse().getContentAsString();
 		
-		assertEquals(jsonExpectedElement2, jsonResponse2);
+		JSONAssert.assertEquals(jsonElement2, jsonResponse2, JSONCompareMode.LENIENT);
 	}
 	
 	
@@ -264,7 +261,7 @@ class ReceitasControllerTest {
 		
 		String jsonResponse = mvcResult.getResponse().getContentAsString();
 		
-		assertEquals(jsonExpectedSeptemberElements, jsonResponse);
+		JSONAssert.assertEquals(jsonExpectedSeptemberElements, jsonResponse, JSONCompareMode.LENIENT);
 	}
 	
 	
