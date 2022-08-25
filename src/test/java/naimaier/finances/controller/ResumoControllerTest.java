@@ -15,6 +15,8 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureTestEnti
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -31,6 +33,7 @@ import naimaier.finances.model.Receita;
 @AutoConfigureTestEntityManager
 @Transactional
 @ActiveProfiles("test")
+@DirtiesContext(classMode = ClassMode.AFTER_CLASS)
 class ResumoControllerTest {
 	
 	@Autowired
