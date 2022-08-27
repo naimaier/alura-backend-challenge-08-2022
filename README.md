@@ -5,7 +5,7 @@ Its an *API* for household budget management developed in *Java* using the *Spri
 For the tests I used *JUnit 5*.
 It has also features *JWT* authentication.
 
-The application consists in *CRUD* functionalities to manage income, expenses and has a monthly summary.
+The application consists of *CRUD* functionalities to manage income, expenses and has a monthly summary.
 
 Base url: https://alura-budget.herokuapp.com/
 
